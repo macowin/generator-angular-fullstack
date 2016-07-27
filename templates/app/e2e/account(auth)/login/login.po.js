@@ -20,15 +20,7 @@ var LoginPage = function() {
       }
     }
 
-    form.submit.click();
-    // Login takes some time, so wait until it's done.
-    // For the test app's login, we know it's done when it
-    // doesn't contain 'login'
-    return browser.driver.wait(() => {
-      return browser.driver.getCurrentUrl().then(url => {
-        return !/login/.test(url);
-      });
-    }, 10000);
+    return form.submit.click();
   };
 };
 
