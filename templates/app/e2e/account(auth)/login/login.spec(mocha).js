@@ -55,13 +55,14 @@ describe('Login View', function() {
 
   describe('with local auth', function() {
 
-    it('should login a user and redirecting to "/"', function() {
+    it('should login a user and redirect to "/"', function() {
       return page.login(testUser).then(() => {
         // Login takes some time, so wait until it's done.
         // For the test app's login, we know it's done when it
         // doesn't contain 'login'
         return browser.driver.wait(() => {
           return browser.driver.getCurrentUrl().then(url => {
+            console.log(url);
             return !/login/.test(url);
           });
         }, 10000);
