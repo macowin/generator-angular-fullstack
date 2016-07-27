@@ -3,6 +3,15 @@
 var config = browser.params;<% if (filters.mongooseModels) { %>
 var UserModel = require(config.serverConfig.root + '/server/api/user/user.model').default;<% } %><% if (filters.sequelizeModels) { %>
 var UserModel = require(config.serverConfig.root + '/server/sqldb').User;<% } %>
+import fs from 'fs';
+
+function screenshot(i) {
+  return browser.takeScreenshot().then(png => {
+    let stream = fs.createWriteStream(`${process.env.CIRCLE_ARTIFACTS || ''}/screenshot${i}.png`);
+    stream.write(new Buffer(png, 'base64'));
+    stream.end();
+  });
+}
 
 describe('Login View', function() {
   var page;
@@ -56,21 +65,25 @@ describe('Login View', function() {
   describe('with local auth', function() {
 
     it('should login a user and redirect to "/"', function() {
-      return page.login(testUser).then(() => {
+      let i = 0;
+
+      return screenshot(i++).then(() => page.login(testUser)).then(() => {
         // Login takes some time, so wait until it's done.
         // For the test app's login, we know it's done when it
         // doesn't contain 'login'
-        return browser.driver.wait(() => {
+        return screenshot(i++).then(() => browser.driver.wait(() => {
           return browser.driver.getCurrentUrl().then(url => {
             console.log(url);
+            screenshot(i++);
             return !/login/.test(url);
           });
-        }, 10000);
+        }, 10000));
       }).then(() => {
+        screenshot(i++);
         var navbar = require('../../components/navbar/navbar.po');
 
-        <%= expect() %>browser.getCurrentUrl()<%= to() %>.eventually.equal(config.baseUrl + '/');
-        <%= expect() %>navbar.navbarAccountGreeting.getText()<%= to() %>.eventually.equal('Hello ' + testUser.name);
+        expect(browser.getCurrentUrl()).to.eventually.equal(config.baseUrl + '/');
+        expect(navbar.navbarAccountGreeting.getText()).to.eventually.equal('Hello ' + testUser.name);
       });
     });
 
