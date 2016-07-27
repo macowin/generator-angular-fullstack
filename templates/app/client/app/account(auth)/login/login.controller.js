@@ -21,7 +21,7 @@ export default class LoginController {
     email: '',
     password: ''
   };
-  errors = {login: undefined};
+  errors;
   submitted = false;
   Auth;
   <%_ if(filters.ngroute) { -%>
@@ -36,6 +36,7 @@ export default class LoginController {
     this.$location = $location;
     <%_ } if(filters.uirouter) { -%>
     this.$state = $state;<% } %>
+    this.errors = {login: undefined};
   }
 
   login(form) {
