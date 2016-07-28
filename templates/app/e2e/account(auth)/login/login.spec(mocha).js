@@ -65,6 +65,7 @@ describe('Login View', function() {
   describe('with local auth', function() {
 
     it('should login a user and redirect to "/"', function() {
+      const navbar = require('../../components/navbar/navbar.po');
       let i = 0;
 
       return screenshot(i++).then(() => page.login(testUser)).then(() => {
@@ -81,7 +82,6 @@ describe('Login View', function() {
         // }, 10000));
       }).then(() => {
         screenshot(i++);
-        var navbar = require('../../components/navbar/navbar.po');
 
         expect(browser.driver.isElementPresent(by.id('banner'))).to.eventually.be.true;
         expect(navbar.navbarAccountGreeting.getText()).to.eventually.equal('Hello ' + testUser.name);
