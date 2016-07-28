@@ -83,6 +83,8 @@ describe('Login View', function() {
       }).then(() => {
         screenshot(i++);
 
+        browser.sleep(1000);
+
         expect(browser.driver.isElementPresent(by.id('banner'))).to.eventually.be.true;
         expect(navbar.navbarAccountGreeting.getText()).to.eventually.equal('Hello ' + testUser.name);
       });
