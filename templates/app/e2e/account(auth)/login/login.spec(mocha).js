@@ -71,13 +71,14 @@ describe('Login View', function() {
         // Login takes some time, so wait until it's done.
         // For the test app's login, we know it's done when it
         // doesn't contain 'login'
-        return screenshot(i++).then(() => browser.driver.wait(() => {
-          return browser.driver.getCurrentUrl().then(url => {
-            console.log(url);
-            screenshot(i++);
-            return !/login/.test(url);
-          });
-        }, 10000));
+        return browser.wait(protractor.until.elementIsVisible(document.getElementById('banner')), 5000, 'Error: Element #banner did not display within 5 seconds');
+        // return screenshot(i++).then(() => browser.driver.wait(() => {
+        //   return browser.driver.getCurrentUrl().then(url => {
+        //     console.log(url);
+        //     screenshot(i++);
+        //     return !/login/.test(url);
+        //   });
+        // }, 10000));
       }).then(() => {
         screenshot(i++);
         var navbar = require('../../components/navbar/navbar.po');
